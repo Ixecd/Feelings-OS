@@ -1,6 +1,7 @@
 # Feelings-OS ROADMAP
 
 > 创建日期：2026-05-21
+> 最后更新：2026-05-23
 > 当前版本：v0.1.0（架构设计阶段）
 > 原则：架构设计先于代码。模糊想法 → [FUTURE.md](OS-FUTURE.md)
 
@@ -10,6 +11,7 @@
 
 ### 已完成
 
+**系统架构**
 - `Feelings-OS.md` — OS 完整架构（上级项目根目录）
 - 六个守护进程：mempoold / schedulerd / busd / cached / timerd / logd
 - /dev 文件体系：ear / wrist / neck / temple / safety / mempool / cache
@@ -18,7 +20,18 @@
 - 四层缓存集成：L0 BRAM → L1 线程 → L2 节点 → L3 分布式
 - Unix 哲学对齐：小组件 + 文件接口 + 管道组合
 - 调度器偏离 Unix CFS 的明确声明——安域永远抢占
-- 项目管理文档：OS-MEMORY / OS-README / OS-PHILOSOPHY / OS-HANDOFF / OS-ROADMAP / OS-SNAPSHOT / OS-FORGET / OS-FUTURE / OS-MISTAKES / OS-DEPENDENCY_POLICY / OS-CONVENTIONS / OS-DEEPSEEK
+
+**设计文档（ADR）**
+- `docs/design/001-mpu-sas.md` — 单一地址空间 + MPU 物理隔离 vs MMU。零周期硬件熔断。
+- `docs/design/002-busd-arbiter.md` — busd Ping-Pong 时序指挥官。硬件看门狗。Epoch 硬标签拒收。非对称信任。
+- `docs/design/003-p0-fault-recovery.md` — P0 熔断 → Stale 帧丢弃 → 10ms 保底帧 → Slow Start 爬坡 → 二次熔断去信任化。
+- `docs/design/004-context-hijacking.md` — PSR 条件码清零。TCB 劫持。animi 状态机清洗。预测矩阵零化。软硬 Epoch 对齐。
+- `docs/design/005-memory-taxonomy.md` — 原始数据冻结（RO）vs 衍生数据擦除（Unmap）。MPU 偷渡写保护。Post-Mortem 黑匣子。
+- `docs/design/006-page-draining.md` — 周期窃取 DMA + 微量分摊（64B/帧）。原子状态字 CAS 回收。二次熔断搬运中断。
+- `docs/design/007-frametypestate-validator.md` — Rust Typestate 编译期闸门。UnvalidatedFrame → ValidatedFrame。SIMD 零拷贝校验。
+
+**项目管理文档**
+- OS-MEMORY / OS-README / OS-PHILOSOPHY / OS-HANDOFF / OS-ROADMAP / OS-SNAPSHOT / OS-FORGET / OS-FUTURE / OS-MISTAKES / OS-DEPENDENCY_POLICY / OS-CONVENTIONS / OS-DEEPSEEK
 
 ---
 
