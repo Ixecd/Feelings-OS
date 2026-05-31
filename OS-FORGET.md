@@ -38,11 +38,19 @@
 
 13. **设备驱动层与 Anim 边界已明确** — Anim 只输出 ESIR 字节流。驱动在 Feelings-OS：busd 总管，ear.c/wrist.c/neck.c/temple.c 各自负责。Anim v0.x 阶段不需要驱动——只做编译器前端。驱动是阶段三之后的事。✅ 架构已定，代码零行。
 
+14. **进程/线程/协程在 Feelings 生态中的位置已明确** — 三层抽象，各守各的边界。FPGA 层 0-4：没有进程/线程/协程——只有门级并行——所有计算空间上同时跑，延迟物理确定。Feelings-OS 层 5-10：六个守护进程 + schedulerd 四级抢占线程——P0 安域永远优先——不是 pthread_create——是硬件线程绑定核心——无内核态切换。Anim/Feelings-Server/KubePivot：async/goroutine——在非实时路径上——网络 IO 密集——离线编译——不在硬实时路径上。硬实时路径上永远没有协程 yield——没有等待——不需要。✅ 边界清晰，每一层用最合适的。
+
 ---
 
 ## 编辑记录
 
 ```
+2026-05-30  v0.1.2 进程/线程/协程边界
+            - P1 新增 #14：进程/线程/协程在Feelings生态中的位置已明确
+            - FPGA无进程/线程/协程——门级并行
+            - Feelings-OS硬实时抢占线程——无CFS
+            - Anim/Server/KubePivot用async/goroutine——不在硬实时路径
+
 2026-05-30  v0.1.1 架构审计
             - P1 新增 3 项（4→7）：
               11. storaged 零设计——PBM/session/logd 需持久化
