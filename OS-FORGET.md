@@ -1,8 +1,12 @@
 # OS-FORGET.md — 待修复项（P0 + P1）
 
-> 扫描日期：2026-05-21
+> 扫描日期：2026-05-21（修订：2026-06-05）
 > 范围：架构规范（`Feelings-OS.md`）+ 代码（零行）
 > 原则：只列 P0（生产命门）和 P1（功能受限）
+> 跨项目依赖：OS v0.5 需要 animi Pass 6-8（Feelings-Core）作为独立进程在 OS 上运行。
+>      Core 的 PBM/Session/Fusion 模块 → 依赖 OS 的 mempoold（L0 BRAM分区）+ busd（设备驱动）+ timerd（PLL时钟）。
+>      当前 Core 零代码，OS 零代码。两边的 v0.2-v0.3 可并行推进——接口契约在 OS-CONVENTIONS.md 已定义。
+> 价值观基线：Core 的 VALUES-TO-CODE.md 已完成——OS 的安域抢占/保底包/数据永不离设备——直接对应 Core 的 P0 安全模块。
 
 ---
 
