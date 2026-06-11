@@ -11,7 +11,7 @@ Feelings-OS 是 Feelings 设备的极薄运行时。不是 Linux。不是 RTOS�
 ```
 六个独立进程
     mempoold    内存池——零动态分配，零碎片，零 GC
-    schedulerd  双调度域——P0 安域硬实时 > P1 感受域软实时 > P2 I/O > P3 后台
+    schedulerd  五级调度域——P0 安域硬实时 > P1 感受域 > P1b 恢复域 > P2 I/O > P3 后台
     busd        总线驱动——主设备时钟广播 + 从设备轮询
     cached      四层缓存——L0 BRAM → L1 线程 → L2 节点 → L3 分布式
     timerd      PLL 全局主时钟——所有设备共享同一个时钟源
@@ -49,7 +49,10 @@ Feelings-OS 不是 Linux。不管虚拟内存。不管文件系统。不管 shel
 层 5     固件与实时系统              busd 总线驱动 + FPGA 寄存器直写
 层 6     设备硬件                   /dev/ear /dev/wrist /dev/neck /dev/temple
 层 7     信号处理                   PLL 锁相 + 信号滤波
-层 8     交织管线                   animi 八 Pass——在 Feelings-OS 上作为独立进程
+层 8     交织管线                   animi 八 Pass——在 Feelings-OS 上作为独立进程。
+                                     Anim ↔ OS 接口：帧缓冲区指针——零拷贝。
+                                     分支预测器在 FPGA BRAM 端口 A——不经过 CPU。
+                                     漏桶/脱敏看门狗→/dev/safety→P0/P1b。
 层 9     类型系统                   animi Pass 1——受 mempoold 内存保护
 层 10    数据架构                   cached + mempoold——L1/L2 缓存物理管理
 ```

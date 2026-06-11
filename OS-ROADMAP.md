@@ -1,7 +1,7 @@
 # Feelings-OS ROADMAP
 
 > 创建日期：2026-05-21
-> 最后更新：2026-05-23
+> 最后更新：2026-06-10
 > 当前版本：v0.1.0（架构设计阶段）
 > 原则：架构设计先于代码。模糊想法 → [FUTURE.md](OS-FUTURE.md)
 
@@ -29,6 +29,7 @@
 - `docs/design/005-memory-taxonomy.md` — 原始数据冻结（RO）vs 衍生数据擦除（Unmap）。MPU 偷渡写保护。Post-Mortem 黑匣子。
 - `docs/design/006-page-draining.md` — 周期窃取 DMA + 微量分摊（64B/帧）。原子状态字 CAS 回收。二次熔断搬运中断。
 - `docs/design/007-frametypestate-validator.md` — Rust Typestate 编译期闸门。UnvalidatedFrame → ValidatedFrame。SIMD 零拷贝校验。
+- `docs/design/008-anim-os-interface.md` — Anim ↔ Feelings-OS 硬实时帧缓冲区接口。双流水线→调度域。分支预测器（BRAM端口A）。漏桶/脱敏→P0/P1b。接口边界一览。
 
 **项目管理文档**
 - OS-MEMORY / OS-README / OS-PHILOSOPHY / OS-HANDOFF / OS-ROADMAP / OS-SNAPSHOT / OS-FORGET / OS-FUTURE / OS-MISTAKES / OS-DEPENDENCY_POLICY / OS-CONVENTIONS / OS-DEEPSEEK
@@ -69,12 +70,12 @@
 ### 目标
 
 ```
-P0 安域中断抢占 → P1 正常调度 → P2/P3 级联退避
+P0 安域中断抢占 → P1 正常调度 → P1b 恢复域注入 → P2/P3 级联退避
 ```
 
 ### 核心交付
 
-- `src/schedulerd.rs` — 四级优先级抢占调度器
+- `src/schedulerd.rs` — 五级优先级抢占调度器
 - C 驱动层中断向量表配置——P0 安域最高优先级
 - 抢占验证：P1 运行时收到 P0 中断 → 当前周期结束立即切换
 
@@ -120,6 +121,7 @@ P0 安域中断抢占 → P1 正常调度 → P2/P3 级联退避
 
 ```
 cached 管理 L0-L2 物理映射 → animi 进程在 Feelings-OS 上跑通一个 Session
+  含 Anim ↔ OS 帧缓冲区接口（ADR 008）——分支预测器/漏桶/恢复帧/脱敏看门狗
 ```
 
 ### 核心交付

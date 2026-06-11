@@ -1,11 +1,11 @@
 # OS-FORGET.md — 待修复项（P0 + P1）
 
-> 扫描日期：2026-05-21（修订：2026-06-05）
-> 范围：架构规范（`Feelings-OS.md`）+ 代码（零行）
+> 扫描日期：2026-05-21（修订：2026-06-10）
+> 范围：架构规范（`Feelings-OS.md`）+ 设计文档（8 ADR）+ 代码（零行）
 > 原则：只列 P0（生产命门）和 P1（功能受限）
 > 跨项目依赖：OS v0.5 需要 animi Pass 6-8（Feelings-Core）作为独立进程在 OS 上运行。
 >      Core 的 PBM/Session/Fusion 模块 → 依赖 OS 的 mempoold（L0 BRAM分区）+ busd（设备驱动）+ timerd（PLL时钟）。
->      当前 Core 零代码，OS 零代码。两边的 v0.2-v0.3 可并行推进——接口契约在 OS-CONVENTIONS.md 已定义。
+>      当前 Core 零代码，OS 零代码。两边的 v0.2-v0.3 可并行推进——接口契约在 ADR 008 已定义。
 > 价值观基线：Core 的 VALUES-TO-CODE.md 已完成——OS 的安域抢占/保底包/数据永不离设备——直接对应 Core 的 P0 安全模块。
 
 ---
@@ -49,6 +49,12 @@
 ## 编辑记录
 
 ```
+2026-06-10  v0.1.3 Anim ↔ OS 硬实时接口定稿
+            - ADR 008 新增：双流水线→调度域映射 + 分支预测器(BRAM端口A) + 漏桶/P0熔断 + 脱敏/P1b恢复帧
+            - ROADMAP 更新：v0.3 调度域五级(P0/P1/P1b/P2/P3) + v0.5 Anim 集成接口补充
+            - README 更新：五级调度域替换双调度域 + Anim 帧缓冲区接口描述
+            - 接口契约从 OS-CONVENTIONS.md 迁移至 ADR 008
+
 2026-05-30  v0.1.2 进程/线程/协程边界
             - P1 新增 #14：进程/线程/协程在Feelings生态中的位置已明确
             - FPGA无进程/线程/协程——门级并行
