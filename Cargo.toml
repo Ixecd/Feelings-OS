@@ -1,0 +1,13 @@
+[package]
+name = "feelings-os"
+version = "0.1.0"
+edition = "2021"
+description = "Feelings-OS — animi v2.0 硬实时底座。六个守护进程，一切皆文件"
+license = "MIT"
+repository = "https://github.com/Ixecd/Feelings-OS"
+authors = ["qc <Ixecd>"]
+
+[dependencies]
+
+[build-dependencies]
+cc = "1"
